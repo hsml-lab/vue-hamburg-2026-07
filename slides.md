@@ -1,662 +1,780 @@
 ---
-# try also 'default' to start simple
 theme: seriph
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
-background: https://cover.sli.dev
-# some information about your slides (markdown enabled)
-title: Welcome to Slidev
+background: https://cdn.jsdelivr.net/gh/slidevjs/slidev-covers@main/static/_0p_9gryfNo.webp
+title: HSML - Hyper Short Markup Language
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
+  ## HSML - Hyper Short Markup Language
 
-  Learn more at [Sli.dev](https://sli.dev)
-# apply UnoCSS classes to the current slide
+  A pug-inspired HTML preprocessor, written in Rust.
+  Less typing, more shipping.
+
+  Christopher Quadflieg · Vue.js Hamburg Meetup #21 · 2026-07-01
 class: text-center
-# https://sli.dev/features/drawing
 drawings:
   persist: false
-# slide transition: https://sli.dev/guide/animations.html#slide-transitions
 transition: slide-left
-# enable Comark Syntax: https://comark.dev/syntax/markdown
-comark: true
-# duration of the presentation
-duration: 35min
+duration: 25
+mdc: true
+colorSchema: dark
 ---
 
-# Welcome to Slidev
+# HSML
 
-Presentation slides for developers
+## Hyper Short Markup Language
 
-<div @click="$slidev.nav.next" class="mt-12 py-1" hover:bg="white op-10">
-  Press Space for next page <carbon:arrow-right />
+A pug-inspired HTML preprocessor, written in Rust.
+
+<div class="pt-12 opacity-70">
+  Christopher Quadflieg &middot; Vue.js Hamburg <span op="60">#</span>21 &middot; 2026-07-01
 </div>
 
-<div class="abs-br m-6 text-xl">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="slidev-icon-btn">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" class="slidev-icon-btn">
+<div class="abs-br m-6 text-xl flex gap-3">
+  <a href="https://github.com/hsml-lab" target="_blank" class="slidev-icon-btn" title="hsml-lab on GitHub">
     <carbon:logo-github />
+  </a>
+  <a href="https://hsml-lab.github.io/playground/" target="_blank" class="slidev-icon-btn" title="HSML Playground">
+    <carbon:code />
   </a>
 </div>
 
 <!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
+Welcome! 20 minutes, then 5 for questions.
+Today: why HSML exists, what it is, how it works, and how to drop it into your Vue project tonight.
 -->
 
 ---
 transition: fade-out
+layout: center
+class: text-center
 ---
 
-# What is Slidev?
+# Hi, I'm Christopher
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+Open-source maintainer · `@Shinigami92`
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - themes can be shared and re-used as npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embed Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export to PDF, PPTX, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - virtually anything that's possible on a webpage is possible in Slidev
-<br>
-<br>
+I write Vue and Rust - and, as a frontend dev, a lot of HTML.
 
-Read more about [Why Slidev?](https://sli.dev/guide/why)
+<div v-click class="pt-10 text-2xl opacity-80">
+  I got tired of writing HTML.
+</div>
+
+<div v-click class="pt-2 text-lg opacity-60">
+  So I built a way to write less of it.
+</div>
+
+---
+transition: slide-up
+---
+
+# How I got here
+
+<div class="pt-8 space-y-6 text-lg">
+
+<div v-click>
+  <span class="opacity-50 inline-block w-32">2019–2021</span>
+  <strong>adSoul GmbH</strong> &nbsp;·&nbsp;
+  <span class="opacity-80">first contact with Pug - I loved it.</span>
+</div>
+
+<div v-click>
+  <span class="opacity-50 inline-block w-32">while there</span>
+  wrote <a href="https://github.com/prettier/plugin-pug" target="_blank"><code>@prettier/plugin-pug</code></a> &nbsp;·&nbsp;
+  <span class="opacity-80">a Pug formatter for Prettier.</span>
+</div>
+
+<div v-click>
+  <span class="opacity-50 inline-block w-32">then</span>
+  <strong>Tailwind happened</strong> &nbsp;·&nbsp;
+  <span class="opacity-80">and Pug couldn't keep up.</span>
+</div>
+
+</div>
+
+<div v-click class="pt-12 text-center text-xl opacity-80">
+  I didn't bail on Pug lightly.
+</div>
 
 <!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/features/slide-scope-style
+Markus Heiden (lead dev at adSoul) is in the audience - wave to him during the first bullet.
+The plugin-pug detail matters: it signals I shipped real Pug tooling before deciding it
+wasn't enough. The frustration that birthed HSML is concrete, not theoretical.
 -->
 
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-</style>
+---
+layout: center
+---
+
+# Let's start with some Vue
+
+```vue {all|2-5|6-10}
+<template>
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-900">
+      Hello World
+    </h1>
+    <div class="card rounded-lg shadow-md bg-white p-6">
+      <img class="rounded-full" src="/avatar.jpg" />
+      <p class="text-gray-500 mt-2">Nice to meet you!</p>
+    </div>
+  </div>
+</template>
+```
+
+<div v-click class="pt-4 text-center text-xl opacity-80">
+  Familiar? <span v-mark.red="3">Also: a lot of noise.</span>
+</div>
 
 <!--
-Here is another comment.
+Click 1 - point at the wrapping `<div>` repetition.
+Click 2 - point at the explicit closing tags and attribute formatting.
+Click 3 - the punchline.
+-->
+
+---
+
+# We've seen this problem before
+
+<div class="grid grid-cols-2 gap-8 pt-4">
+
+<div>
+
+### Pug solved it in 2010
+
+```pug
+.container.mx-auto.px-4.py-8
+  h1.text-3xl.font-bold.text-gray-900 Hello World
+  .card.rounded-lg.shadow-md.bg-white.p-6
+    img.rounded-full(src="/avatar.jpg")
+    p.text-gray-500.mt-2 Nice to meet you!
+```
+
+Indentation instead of closing tags. Class shorthand. Lean.
+
+</div>
+
+<div v-click>
+
+### Then Tailwind happened
+
+```pug
+.bg-\[\#1da1f2\].text-white
+  .lg\:hover\:underline
+    .\[\&\:nth-child\(3\)\] 😱
+```
+
+Pug treats `[`, `(`, `:`, `&` as syntax.
+Arbitrary values need escaping. Everywhere.
+
+</div>
+
+</div>
+
+<div v-click class="pt-6 max-w-3xl mx-auto border-l-2 border-orange-400 pl-4 text-sm opacity-80">
+  <em>&ldquo;We intentionally do not support this, as we want to save those special characters for potential future use.&rdquo;</em>
+  <div class="opacity-60 pt-1">
+    - ForbesLindesay, Pug maintainer
+    (<a href="https://github.com/pugjs/pug/issues/3155" target="_blank">pugjs/pug#3155</a>, 2019)
+  </div>
+</div>
+
+<div v-click class="pt-6 text-center text-xl">
+  We need <span v-mark.circle.orange="3">Pug's ergonomics</span> with <span v-mark.circle.orange="3">Tailwind's freedom</span>.
+</div>
+
+<!--
+Pug is great. But it predates the utility-CSS era.
+Once Tailwind arbitrary values landed, Pug became hostile - and the maintainers explicitly
+declined to add support. PRs and issues (#3155, #3307, #3373) span 2019–2022.
+If anyone wants more receipts, point them at the memory note.
 -->
 
 ---
 transition: slide-up
-level: 2
 ---
 
-# Navigation
-
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/ui#navigation-bar)
-
-## Keyboard Shortcuts
-
-|                                                     |                             |
-| --------------------------------------------------- | --------------------------- |
-| <kbd>right</kbd> / <kbd>space</kbd>                 | next animation or slide     |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd>                                       | previous slide              |
-| <kbd>down</kbd>                                     | next slide                  |
-
-<!-- https://sli.dev/guide/animations.html#click-animation -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-  alt=""
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
-
----
-layout: two-cols
-layoutClass: gap-16
----
-
-# Table of contents
-
-You can use the `Toc` component to generate a table of contents for your slides:
-
-```html
-<Toc minDepth="1" maxDepth="1" />
-```
-
-The title will be inferred from your slide content, or you can override it with `title` and `level` in your frontmatter.
-
-::right::
-
-<Toc text-sm minDepth="1" maxDepth="2" />
-
----
-layout: image-right
-image: https://cover.sli.dev
----
-
-# Code
-
-Use code snippets and get the highlighting directly, and even types hover!
-
-```ts [filename-example.ts] {all|4|6|6-7|9|all} twoslash
-// TwoSlash enables TypeScript hover information
-// and errors in markdown code blocks
-// More at https://shiki.style/packages/twoslash
-import { computed, ref } from 'vue'
-
-const count = ref(0)
-const doubled = computed(() => count.value * 2)
-
-doubled.value = 2
-```
-
-<arrow v-click="[4, 5]" x1="350" y1="310" x2="195" y2="342" color="#953" width="2" arrowSize="1" />
-
-<!-- This allow you to embed external code blocks -->
-<<< @/snippets/external.ts#snippet
-
-<!-- Footer -->
-
-[Learn more](https://sli.dev/features/line-highlighting)
-
-<!-- Inline style -->
-<style>
-.footnotes-sep {
-  @apply mt-5 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
-<!--
-Notes can also sync with clicks
-
-[click] This will be highlighted after the first click
-
-[click] Highlighted with `count = ref(0)`
-
-[click:3] Last click (skip two clicks)
--->
-
----
-level: 2
----
-
-# Shiki Magic Move
-
-Powered by [shiki-magic-move](https://shiki-magic-move.netlify.app/), Slidev supports animations across multiple code snippets.
-
-Add multiple code blocks and wrap them with <code>````md magic-move</code> (four backticks) to enable the magic move. For example:
+# Hello, HSML
 
 ````md magic-move {lines: true}
-```ts {*|2|*}
-// step 1
-const author = reactive({
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-})
+```hsml
+doctype html
+html
+  head
+    title My Page
+  body
+    h1.text-xl.font-bold Hello World
+    .card
+      img.rounded-full(src="/avatar.jpg" alt="Me")
+      p.text-gray-500 Nice to meet you!
 ```
 
-```ts {*|1-2|3-4|3-4,8}
-// step 2
-export default {
-  data() {
-    return {
-      author: {
-        name: 'John Doe',
-        books: [
-          'Vue 2 - Advanced Guide',
-          'Vue 3 - Basic Guide',
-          'Vue 4 - The Mystery'
-        ]
-      }
-    }
-  }
-}
-```
-
-```ts
-// step 3
-export default {
-  data: () => ({
-    author: {
-      name: 'John Doe',
-      books: [
-        'Vue 2 - Advanced Guide',
-        'Vue 3 - Basic Guide',
-        'Vue 4 - The Mystery'
-      ]
-    }
-  })
-}
-```
-
-Non-code blocks are ignored.
-
-```vue
-<!-- step 4 -->
-<script setup>
-const author = {
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-}
-</script>
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Page</title>
+  </head>
+  <body>
+    <h1 class="text-xl font-bold">Hello World</h1>
+    <div class="card">
+      <img class="rounded-full" src="/avatar.jpg" alt="Me" />
+      <p class="text-gray-500">Nice to meet you!</p>
+    </div>
+  </body>
+</html>
 ```
 ````
 
+<div class="text-center pt-4 opacity-70">
+  Press space - same markup, compiled.
+</div>
+
 ---
 
-# Components
+# Syntax tour - tags, classes, ids
 
-<div grid="~ cols-2 gap-4">
+<div class="grid grid-cols-2 gap-6 pt-2">
+
 <div>
 
-You can use Vue components directly inside your slides.
+**Tags nest by indentation**
 
-We have provided a few built-in components like `<Tweet/>`, `<BlueSky/>`, and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
+```hsml
+div
+  p Some text
+  ul
+    li First
+    li Second
 ```
 
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
+**`div` is the default tag**
 
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
+```hsml
+.container
+  .card
+    .card-body Hello
+```
 
 </div>
+
 <div>
 
-```html
-<Tweet id="1390115482657726468" />
+**Classes and IDs inline**
+
+```hsml
+h1#title.text-red.font-bold Hello
 ```
 
-<Tweet id="1390115482657726468" scale="0.65" />
+**Text blocks for multi-line content**
+
+```hsml
+p.
+  This is a multi-line
+  text block that
+  preserves line breaks.
+```
 
 </div>
+
+</div>
+
+---
+
+# Syntax tour - attributes
+
+<div class="grid grid-cols-2 gap-6 pt-2">
+
+<div>
+
+**Inline**
+
+```hsml
+img(src="/photo.jpg" alt="A photo")
+a(href="/" target="_blank") Home
+button(disabled) Click
+```
+
+</div>
+
+<div>
+
+**Multiline when it gets long**
+
+```hsml
+img(
+  src="/photo.jpg"
+  alt="A photo"
+  width="300"
+  height="200"
+)
+```
+
+</div>
+
+</div>
+
+<div v-click class="pt-6">
+
+**Comments** - and they work *inside* attribute lists too
+
+```hsml
+// Dev comment - stripped from output
+//! Native comment - rendered as <!-- ... -->
+
+img(
+  // even between attrs
+  src="/photo.jpg"
+  alt=""           // empty on purpose 🤷
+)
+```
+
 </div>
 
 <!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
+Attribute-inline comments are a small thing, but Pug breaks on them. They matter when you're
+documenting why a particular ARIA attribute, alt="", or data-* is the way it is - context that
+belongs next to the attr, not at the top of the file.
 -->
 
 ---
-class: px-20
+layout: center
 ---
 
-# Themes
+# The killer feature
 
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
+Tailwind arbitrary values, **unescaped**:
 
-<div grid="~ cols-2 gap-2" m="t-2">
-
-```yaml
----
-theme: default
----
+```hsml {all|1|2|3}
+.bg-[#1da1f2].text-white
+.lg:[&:nth-child(3)]:hover:underline
+.grid-cols-[repeat(auto-fit,minmax(200px,1fr))]
 ```
 
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true" alt="">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true" alt="">
-
+<div v-click class="pt-8 text-center text-xl opacity-80">
+  No backslashes. No template literals. Just write it.
 </div>
 
-Read more about [How to use a theme](https://sli.dev/guide/theme-addon#use-theme) and
-check out the [Awesome Themes Gallery](https://sli.dev/resources/theme-gallery).
+<!--
+This is the moment Pug users go "ohhh".
+HSML's parser was designed Tailwind-first.
+-->
 
 ---
 
-# Clicks Animations
+# Vue and Angular directives just work
 
-You can add `v-click` to elements to add a click animation.
+<div class="grid grid-cols-2 gap-6 pt-2">
 
-<div v-click>
+<div>
 
-This shows up when you press <kbd>space</kbd> or <kbd>right</kbd>, or click outside the slide on the right.
+**Vue**
 
-```html
-<div v-click>This shows up when you trigger a click animation.</div>
+```hsml
+button(
+  @click="handleClick"
+  :class="dynamicClass"
+  v-if="show"
+) Click
+
+template(#default)
+  p Slot content
+
+ul
+  li(v-for="item in items" :key="item.id")
+    span {{ item.name }}
 ```
 
 </div>
 
-<p v-click>
-You can also add modifiers to change the animation:
-</p>
+<div>
 
-<div class="grid gap-3 mt-4 text-sm" style="grid-template-columns: repeat(3, 1fr) 1.5fr 1fr">
-  <div v-after.up class="p-3 rounded border border-primary/20 bg-primary/10">
-    <div class="font-mono text-xs opacity-60 mb-1">v-click.up</div>
-    <div>Slide from bottom</div>
-  </div>
-  <div v-click.fade-in class="p-3 rounded border border-primary/30 bg-primary/15">
-    <div class="font-mono text-xs opacity-60 mb-1">v-click.fade-in</div>
-    <div>Fade in</div>
-  </div>
-  <div v-click.fade class="p-3 rounded border border-primary/40 bg-primary/20">
-    <div class="font-mono text-xs opacity-60 mb-1">v-click.fade</div>
-    <div>Dim (0.5 opacity)</div>
-  </div>
-  <div v-click.fade.right.scale class="p-3 rounded border border-primary/50 bg-primary/25">
-    <div class="font-mono text-xs opacity-60 mb-1">v-click.fade.right.scale</div>
-    <div>Composed</div>
-  </div>
-  <div v-click.none class="p-3 rounded border border-primary/60 bg-primary/30">
-    <div class="font-mono text-xs opacity-60 mb-1">v-click.none</div>
-    <div>No transition</div>
-  </div>
-</div>
+**Angular**
 
-<v-click>
+```hsml
+button(
+  [disabled]="isDisabled"
+  (click)="onClick()"
+) Click
 
-The <span v-mark.red="7"><code>v-mark</code> directive</span>
-also allows you to add
-<span v-mark.circle.orange="8">inline marks</span>
-, powered by [Rough Notation](https://roughnotation.com/):
-
-```html
-<span v-mark.underline.orange>inline markers</span>
+div(*ngIf="show")
+  p Hello
 ```
 
-</v-click>
+</div>
 
-<div v-click mt-12>
+</div>
 
-[Learn more](https://sli.dev/guide/animations#click-animation)
-
+<div v-click class="pt-6 text-center opacity-80">
+  Framework attribute syntax is parsed natively - no escapes, no plugins.
 </div>
 
 ---
 
-# Motions
+# Helpful diagnostics
 
-Motion animations are powered by [@vueuse/motion](https://motion.vueuse.org/), triggered by `v-motion` directive.
+Like a compiler should:
 
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }"
-  :click-3="{ x: 80 }"
-  :leave="{ x: 1000 }"
->
-  Slidev
-</div>
+```log
+error[E001]: Tag name must start with an ASCII letter
+ --> example.hsml:1:1
+  |
+1 | 42div Hello
+  | ^
 ```
 
-<div class="w-60 relative">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-square.png"
-      alt=""
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-circle.png"
-      alt=""
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-triangle.png"
-      alt=""
-    />
-  </div>
+<div v-click class="pt-6">
 
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
+```log
+warning[W002]: Duplicate class 'foo'
+ --> example.hsml:1:12
+  |
+1 | h1.foo.foo Hello
+  |        ^
+```
+
 </div>
 
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
+<div v-click class="pt-6 text-sm opacity-70">
+  6 error codes (E001–E006), 6 warning codes (W001–W006).
+  Output as human, JSON, GitHub Actions annotations, or GitLab Code Quality.
+</div>
+
+---
+layout: two-cols
+layoutClass: gap-12 pt-8
+---
+
+# How it's built
+
+<v-clicks>
+
+- **Rust core** - parser, formatter, diagnostics
+- **Native CLI** - `compile`, `check`, `fmt`, `parse`
+- **WASM package** on npm - works in browsers and bundlers
+- **Language Server** - diagnostics, hover, format in any LSP-aware editor
+- **VS Code extension** - auto-downloads the binary
+
+</v-clicks>
+
+<div v-click class="pt-6 text-sm opacity-70">
+  Fast enough to be invisible in watch mode and CI - no JS lexer in the hot path.
+</div>
+
+::right::
+
+<div class="pt-2">
+
+```mermaid {scale: 0.55}
+graph TD
+  src([HSML source]) --> parser([Rust parser])
+  parser --> cli[CLI]
+  parser --> wasm[WASM npm]
+  parser --> lsp[LSP server]
+  wasm --> vite[Vite plugin]
+  wasm --> play[Playground]
+  lsp --> vsc[vscode-hsml]
+```
+
+</div>
+
+<!--
+One parser, many surfaces.
+The Vite plugin and the Playground both consume the WASM package.
+-->
+
+---
+transition: slide-up
+---
+
+# Using HSML in Vue - setup
+
+<div class="pt-2">
+
+```sh
+pnpm add -D vite-plugin-vue-hsml
+```
+
+</div>
+
+<div v-click class="pt-6">
+
+```ts {4,7}
+// vite.config.ts
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import vueHsml from "vite-plugin-vue-hsml";
+
+export default defineConfig({
+  plugins: [vueHsml(), vue()],
+});
+```
+
+</div>
+
+<div v-click="2" class="pt-8 text-center text-xl">
+  That's it. <span v-mark.underline.orange="2">Compile-time</span>. Zero runtime cost.
+</div>
+
+---
+
+# `<template lang="hsml">`
+
+```vue {all|1-5|7-13}
 <script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
+import { ref } from "vue";
+
+const count = ref(0);
 </script>
 
-<div
-  v-motion
-  :initial="{ x:35, y: 30, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
+<template lang="hsml">
+div
+  h1.text-xl.font-bold Hello World
+  button(@click="count++") Count is {{ count }}
+  .card
+    p.text-gray-500 Nice to meet you!
+</template>
+```
 
-[Learn more](https://sli.dev/guide/animations.html#motion)
-
+<div v-click class="pt-4 text-center opacity-80">
+  Vue's SFC compiler sees plain HTML. The plugin transforms it before Vue ever looks.
 </div>
 
 ---
-
-# $\LaTeX$
-
-$\LaTeX$ is supported out-of-box. Powered by [$\KaTeX$](https://katex.org/).
-
-<div h-3 />
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$ {1|3|all}
-\begin{aligned}
-\nabla \cdot \vec{E} &= \frac{\rho}{\varepsilon_0} \\
-\nabla \cdot \vec{B} &= 0 \\
-\nabla \times \vec{E} &= -\frac{\partial\vec{B}}{\partial t} \\
-\nabla \times \vec{B} &= \mu_0\vec{J} + \mu_0\varepsilon_0\frac{\partial\vec{E}}{\partial t}
-\end{aligned}
-$$
-
-[Learn more](https://sli.dev/features/latex)
-
+transition: slide-left
 ---
 
-# Diagrams
+# Real-world: Elk's `MainContent.vue`
 
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-4 gap-5 pt-4 -mb-6">
-
-```mermaid {scale: 0.5, alt: 'A simple sequence diagram'}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
-
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
-
-```mermaid
-mindmap
-  root((mindmap))
-    Origins
-      Long history
-      ::icon(fa fa-book)
-      Popularisation
-        British popular psychology author Tony Buzan
-    Research
-      On effectiveness<br/>and features
-      On Automatic creation
-        Uses
-            Creative techniques
-            Strategic planning
-            Argument mapping
-    Tools
-      Pen and paper
-      Mermaid
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
-```
-
-</div>
-
-Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML Diagrams](https://sli.dev/features/plantuml)
-
----
-foo: bar
-dragPos:
-  square: 691,32,167,_,-16
----
-
-# Draggable Elements
-
-Double-click on the draggable elements to edit their positions.
-
-<br>
-
-###### Directive Usage
-
-```md
-<img v-drag="'square'" src="https://sli.dev/logo.png">
-```
-
-<br>
-
-###### Component Usage
-
-```md
-<v-drag text-3xl>
-  <div class="i-carbon:arrow-up" />
-  Use the `v-drag` component to have a draggable container!
-</v-drag>
-```
-
-<v-drag pos="663,206,261,_,-15">
-  <div text-center text-3xl border border-main rounded>
-    Double-click me!
+````md magic-move {lines: true}
+```vue
+<template>
+  <div ref="container" :class="containerClass">
+    <div
+      sticky
+      top-0
+      z-20
+      bg="[rgba(var(--rgb-bg-base),0.7)]"
+      :class="{
+        'backdrop-blur': !getPreferences(userSettings, 'lowPerformance'),
+      }"
+    >
+      <div flex="~ justify-between" min-h-53px px-2 py-1 border="b base">
+        <button
+          v-if="showBackButton"
+          btn-text
+          flex
+          items-center
+          p-3
+          xl:hidden
+          :aria-label="$t('nav.back')"
+          @click="$router.go(-1)"
+        >
+          <div text-lg i-ri:arrow-left-line class="rtl-flip" />
+        </button>
+        <slot name="title" />
+      </div>
+    </div>
   </div>
-</v-drag>
-
-<img v-drag="'square'" src="https://sli.dev/logo.png">
-
-###### Draggable Arrow
-
-```md
-<v-drag-arrow two-way />
+</template>
 ```
 
-<v-drag-arrow pos="67,452,253,46" two-way op70 />
-
----
-src: ./pages/imported-slides.md
-hide: false
----
-
----
-
-# Monaco Editor
-
-Slidev provides built-in Monaco Editor support.
-
-Add `{monaco}` to the code block to turn it into an editor:
-
-```ts {monaco}
-import { ref } from 'vue'
-import { emptyArray } from './external'
-
-const arr = ref(emptyArray(10))
+```vue
+<template lang="hsml">
+div(ref="container" :class="containerClass")
+  .sticky.top-0.z-20(
+    bg="[rgba(var(--rgb-bg-base),0.7)]"
+    :class="{
+      'backdrop-blur': !getPreferences(userSettings, 'lowPerformance'),
+    }"
+  )
+    .min-h-53px.px-2.py-1(flex="~ justify-between" border="b base")
+      button.btn-text.flex.items-center.p-3.xl:hidden(
+        v-if="showBackButton"
+        :aria-label="$t('nav.back')"
+        @click="$router.go(-1)"
+      )
+        .text-lg.rtl-flip(i-ri:arrow-left-line)
+      slot(name="title")
+</template>
 ```
+````
 
-Use `{monaco-run}` to create an editor that can execute the code directly in the slide:
-
-```ts {monaco-run}
-import { version } from 'vue'
-import { emptyArray, sayHello } from './external'
-
-sayHello()
-console.log(`vue ${version}`)
-console.log(emptyArray<number>(10).reduce(fib => [...fib, fib.at(-1)! + fib.at(-2)!], [1, 1]))
-```
+<div class="text-center pt-2 opacity-70 text-sm">
+  Same component. Press space.
+</div>
 
 ---
 layout: center
 class: text-center
 ---
 
-# Learn More
+# The numbers
 
-[Documentation](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/resources/showcases)
+<div class="grid grid-cols-2 gap-12 pt-8 text-5xl font-bold">
+
+<div>
+
+<div class="text-orange-400">−20%</div>
+<div class="text-lg opacity-70 pt-2">characters</div>
+
+</div>
+
+<div>
+
+<div class="text-orange-400">−47%</div>
+<div class="text-lg opacity-70 pt-2">lines in the template</div>
+
+</div>
+
+</div>
+
+<div v-click class="pt-12 text-xl opacity-80">
+  Less to type. Less to read. Less to review.
+</div>
+
+<div v-click class="pt-4 text-base opacity-60">
+  And fewer tokens for your AI to read and write.
+</div>
+
+<!--
+The AI angle is small but lands with this audience - Copilot/Cursor/Claude users feel
+the per-token cost. HSML's smaller surface means cheaper codegen and cheaper review.
+-->
+
+---
+layout: center
+class: text-center
+---
+
+# Let's try it live
+
+<div class="text-3xl pt-6">
+  <a href="https://hsml-lab.github.io/playground/" target="_blank">
+    hsml-lab.github.io/playground
+  </a>
+</div>
+
+<div class="pt-12 opacity-70 text-lg">
+  WASM compilation, shareable URLs, full diagnostics.
+</div>
+
+<!--
+SWITCH WINDOW. Demo plan:
+1. Paste a small Vue-flavored HSML snippet.
+2. Add a Tailwind arbitrary value live.
+3. Introduce a deliberate error (`h1.foo.foo`) - show the warning.
+4. Show the format button.
+5. Share the URL hash back.
+Budget: 3 minutes max. If running long, skip steps 3–4.
+-->
+
+---
+
+# The hsml-lab ecosystem
+
+<div class="grid grid-cols-2 gap-6 pt-2">
+
+<div>
+
+### Core
+
+**[`hsml`](https://github.com/hsml-lab/hsml)**
+Rust compiler, CLI, WASM, LSP
+
+### Vue
+
+**[`vite-plugin-vue-hsml`](https://github.com/hsml-lab/vite-plugin-vue-hsml)**
+`<template lang="hsml">` in SFCs
+
+</div>
+
+<div>
+
+### Editor
+
+**[`vscode-hsml`](https://github.com/hsml-lab/vscode-hsml)**
+Highlighting + LSP, auto-installs the binary
+
+### Try without installing
+
+**[`playground`](https://hsml-lab.github.io/playground/)**
+Live WASM compile in the browser
+
+</div>
+
+</div>
+
+<div v-click class="pt-10 text-center opacity-80">
+  All MIT. Contributions and feedback very welcome.
+</div>
+
+---
+
+# Roadmap
+
+<div class="grid grid-cols-2 gap-8 pt-2">
+
+<div>
+
+### Shipped
+
+- Parser with Tailwind support
+- HTML compiler
+- CLI: `compile`, `check`, `fmt`, `parse`
+- WASM npm package
+- Diagnostics (errors + warnings)
+- `.hsmlignore` support
+- LSP server
+- GitHub / GitLab CI formatters
+
+</div>
+
+<div>
+
+### Next
+
+- Formatters - Prettier plugin, oxfmt
+- Tailwind extractor - shorthand classes
+  aren't picked up yet (source-map issue?)
+- Angular control flow - `@if`, `@for`, `@switch`
+- More framework integrations
+  (Nuxt module, Astro, SvelteKit?)
+- Source maps
+- Richer LSP (completions, code actions)
+- Maybe: `.hsml.erb` for Rails
+- _Your feature here_ - open an issue
+
+</div>
+
+</div>
+
+---
+layout: center
+class: text-center
+---
+
+# Thank you
+
+<div class="pt-6 text-xl opacity-80">
+  Try it &middot; break it &middot; tell me what hurts.
+</div>
+
+<div class="pt-12 text-lg space-y-2">
+  <div class="flex justify-center items-center gap-1">
+    <carbon:logo-github />
+    <a href="https://github.com/hsml-lab" target="_blank">github.com/hsml-lab</a>
+  </div>
+  <div class="flex justify-center items-center gap-1">
+    <carbon:code />
+    <a href="https://hsml-lab.github.io/playground/" target="_blank">hsml-lab.github.io/playground</a>
+  </div>
+  <div class="flex justify-center items-center gap-1">
+    <carbon:logo-mastodon />
+    <a href="https://elk.zone/mas.to/@Shini92" target="_blank">@Shini92@mas.to</a>
+  </div>
+</div>
+
+<div class="pt-12 text-2xl">
+  Questions?
+</div>
 
 <PoweredBySlidev mt-10 />
